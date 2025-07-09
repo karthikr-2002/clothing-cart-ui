@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Featured Clothing Collection</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background: linear-gradient(45deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="fabric" patternUnits="userSpaceOnUse" width="25" height="25"><rect width="25" height="25" fill="%23f8f9fa"/><circle cx="12.5" cy="12.5" r="1" fill="%23e9ecef"/></pattern></defs><rect width="100" height="100" fill="url(%23fabric)"/></svg>') repeat;
+            opacity: 0.08;
+            z-index: -1;
+        }
+
+        .card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid #dee2e6;
+            border-radius: 20px;
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.1),
+                inset 0 2px 4px rgba(255, 255, 255, 0.9);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #007bff, #0056b3, #007bff);
+            z-index: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-20px) rotateX(8deg);
+            box-shadow: 
+                0 25px 70px rgba(0, 0, 0, 0.15),
+                inset 0 2px 8px rgba(255, 255, 255, 0.95);
+            border-color: #007bff;
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            transition: all 0.4s ease;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .card:hover .card-img-top {
+            transform: scale(1.05);
+            filter: brightness(110%) contrast(105%);
+        }
+
+        .card-body {
+            padding: 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            position: relative;
+        }
+
+        .card-body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, #007bff, #0056b3);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .card-brand {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #6c757d;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-text {
+            color: #495057;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #28a745;
+            display: block;
+            margin-top: 0.5rem;
+        }
+
+        .original-price {
+            font-size: 1rem;
+            color: #6c757d;
+            text-decoration: line-through;
+            margin-right: 0.5rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 50%, #004085 100%);
+            border: 2px solid #0056b3;
+            color: white;
+            padding: 16px 36px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 123, 255, 0.4);
+            border-color: #007bff;
+            background: linear-gradient(135deg, #0056b3 0%, #004085 50%, #003d82 100%);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .size-info {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin: 0.5rem 0;
+        }
+
+        /* Responsive breakpoints */
+        @media (max-width: 768px) {
+            .card {
+                max-width: 100%;
+                margin: 0 10px;
+            }
+
+            .card-img-top {
+                height: 280px;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .card-title {
+                font-size: 1.2rem;
+            }
+
+            .card-brand {
+                font-size: 0.9rem;
+            }
+
+            .card-text {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-img-top {
+                height: 220px;
+            }
+
+            .card-body {
+                padding: 1rem;
+            }
+
+            .card-title {
+                font-size: 1.1rem;
+            }
+
+            .card-brand {
+                font-size: 0.8rem;
+            }
+
+            .btn {
+                padding: 12px 28px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Container for multiple cards */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row g-3">
+            <div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
+
+                <div class="row g-3">
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3">
+
+                        <div class="card">
+                            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=320&fit=crop"
+                                class="card-img-top" alt="Casual Shirt">
+                            <div class="card-body">
+                                <h5 class="card-title">Classic Cotton Shirt</h5>
+                                <p class="card-brand">Urban Style</p>
+                                <p class="card-text">
+                                    Premium cotton blend casual shirt
+                                    <div class="size-info">Available in S, M, L, XL</div>
+                                </p>
+                                <div class="price">
+                                    <span class="original-price">₹1,999</span>
+                                    <span>₹1,499</span>
+                                </div>
+                                <a href="#" class="btn">Add to Cart</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3">
+
+                        <div class="card">
+                            <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=320&fit=crop"
+                                class="card-img-top" alt="Denim Jeans">
+                            <div class="card-body">
+                                <h5 class="card-title">Slim Fit Denim Jeans</h5>
+                                <p class="card-brand">Denim Co.</p>
+                                <p class="card-text">
+                                    Comfortable stretch denim jeans
+                                    <div class="size-info"><br>Available in 28-36 waist</div>
+                                </p>
+                                <div class="price">₹2,299</div>
+                                <a href="#" class="btn">Add to Cart</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3">
+
+                        <div class="card">
+                            <div class="badge">NEW</div>
+                            <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=320&fit=crop"
+                                class="card-img-top" alt="Leather Jacket">
+                            <div class="card-body">
+                                <h5 class="card-title">Leather Biker Jacket</h5>
+                                <p class="card-brand">Rebel Gear</p>
+                                <p class="card-text">
+                                    Genuine leather with premium 
+                                    <div class="size-info"><br>Available in S, M, L, XL</div>
+                                </p>
+                                <div class="price">₹8,999</div>
+                                <a href="#" class="btn">Add to Cart</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3">
+
+                        <div class="card">
+                            <img src="https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=400&h=320&fit=crop"
+                                class="card-img-top" alt="Polo Shirt">
+                            <div class="card-body">
+                                <h5 class="card-title">Premium Polo Shirt</h5>
+                                <p class="card-brand">Elite Wear</p>
+                                <p class="card-text">
+                                    Soft cotton polo with collar
+                                    <div class="size-info"><br>Available in S, M, L, XL, XXL</div>
+                                </p>
+                                <div class="price">₹1,799</div>
+                                <a href="#" class="btn">Add to Cart</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3">
+
+                        <div class="card">
+                            <div class="badge">15% OFF</div>
+                            <img src="https://images.unsplash.com/photo-1565084888279-aca607ecce0c?w=400&h=320&fit=crop"
+                                class="card-img-top" alt="Cargo Jeans">
+                            <div class="card-body">
+                                <h5 class="card-title">Cargo Utility Jeans</h5>
+                                <p class="card-brand">Workwear Pro</p>
+                                <p class="card-text">
+                                    Multi-pocket cargo style jeans
+                                    <div class="size-info">Available in 28-38 waist</div>
+                                </p>
+                                <div class="price">
+                                    <span class="original-price">₹2,799</span>
+                                    <span>₹2,379</span>
+                                </div>
+                                <a href="#" class="btn">Add to Cart</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3">
+
+                        <div class="card">
+                            <img src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT6NeDNv81AK738w9vDQPOBNmOwWP5Nc65jjFKpPHsC2itsuiFpkUb_NiOX6giAHwZqqbWI4Mt0s1ooUIePxPf9-I-RPcRjEUnWULrisBzjTH5j8b4CoSx1"
+                                class="card-img-top" alt="Bomber Jacket">
+                            <div class="card-body">
+                                <h5 class="card-title">Classic Bomber Jacket</h5>
+                                <p class="card-text">
+                                    Lightweight bomber with zip closure
+                                    <div class="size-info">Available in S, M, L, XL</div>
+                                </p>
+                                <div class="price">₹3,499</div>
+                                <a href="#" class="btn">Add to Cart</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3">
+
+                        <div class="card">
+                            <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&h=320&fit=crop"
+                                class="card-img-top" alt="Dress Shirt">
+                            <div class="card-body">
+                                <h5 class="card-title">Formal Dress Shirt</h5>
+                                <p class="card-brand">Business Elite</p>
+                                <p class="card-text">
+                                    Crisp formal shirt for office wear
+                                    <div class="size-info">Available in 38-44 collar</div>
+                                </p>
+                                <div class="price">₹2,199</div>
+                                <a href="#" class="btn">Add to Cart</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3">
+
+                        <div class="card">
+                            <div class="badge">SALE</div>
+                            <img src="https://images.unsplash.com/photo-1604176354204-9268737828e4?w=400&h=320&fit=crop"
+                                class="card-img-top" alt="Ripped Jeans">
+                            <div class="card-body">
+                                <h5 class="card-title">Distressed Ripped Jeans</h5>
+                                <p class="card-brand">Trend Setter</p>
+                                <p class="card-text">
+                                    Stylish ripped design jeans
+                                    <div class="size-info">Available in 28-36 waist</div>
+                                </p>
+                                <div class="price">
+                                    <span class="original-price">₹2,999</span>
+                                    <span>₹1,999</span>
+                                </div>
+                                <a href="#" class="btn">Add to Cart</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3">
+
+                        <div class="card">
+                            <img src="https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTvI7rQJH7wUeYDzkR6DWTzOfxQwu5h3xO4XqXNQLVRGaJ02F8DZWuvA3d4cvFANDCCXBylUeBRCLQHJedPTrEBxf543tXiSRzbb83zLYtVmOhDNxjtK-B0nw"
+                                class="card-img-top" alt="Denim Jacket">
+                            <div class="card-body">
+                                <h5 class="card-title">Classic Denim Jacket</h5>
+                                <p class="card-brand">Vintage Denim</p>
+                                <p class="card-text">
+                                    Timeless denim jacket design
+                                    <div class="size-info">Available in S, M, L, XL, XXL</div>
+                                </p>
+                                <div class="price">₹2,999</div>
+                                <a href="#" class="btn">Add to Cart</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3">
+
+                        <div class="card">
+                            <img src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQgW2Yz6m_lbZinAUTZG9oKN9E579pt43tQA23DH9BmjITOv6ihd9oWzcEfxnX0L3jUqhSub5jz96bHK86udiexhYItmkixA9g5hsFb1NqNjKurdl6_CEEI"
+                                class="card-img-top" alt="Henley Shirt">
+                            <div class="card-body">
+                                <h5 class="card-title">Long Sleeve Henley</h5>
+                                <p class="card-text">
+                                    Comfortable henley with button placket
+                                    <div class="size-info"><br>Available in S, M, L, XL</div>
+                                </p>
+                                <div class="price">₹1,299</div>
+                                <a href="#" class="btn">Add to Cart</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3">
+
+                        <div class="card">
+                            <img src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSEvPlB9ttkyxYbzZrEi33q4D6mT_t2rIHd1hvrR8ojQufdHFk3o8CHV1tuSYrDRclcoQzAzSKm7FaeDbunj2R1J9hCeYJyEFQ2lNJqT1nZYKsVANduPDGRqA"
+                                class="card-img-top" alt="Skinny Jeans">
+                            <div class="card-body">
+                                <h5 class="card-title">Skinny Fit Jeans</h5>
+                                <p class="card-brand">Slim Line</p>
+                                <p class="card-text">
+                                    Modern skinny fit with stretch
+                                    <div class="size-info">Available in 28-34 waist</div>
+                                </p>
+                                <div class="price">₹1,999</div>
+                                <a href="#" class="btn">Add to Cart</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3">
+
+                        <div class="card">
+                            <div class="badge">PREMIUM</div>
+                            <img src="https://images.unsplash.com/photo-1520975954732-35dd22299614?w=400&h=320&fit=crop"
+                                class="card-img-top" alt="Blazer">
+                            <div class="card-body">
+                                <h5 class="card-title">Tailored Blazer</h5>
+                                <p class="card-brand">Luxury Formal</p>
+                                <p class="card-text">
+                                    Premium tailored blazer jacket
+                                    <div class="size-info">Available in 38-46 chest</div>
+                                </p>
+                                <div class="price">₹12,999</div>
+                                <a href="#" class="btn">Add to Cart</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
